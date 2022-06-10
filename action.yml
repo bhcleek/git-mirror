@@ -1,0 +1,37 @@
+---
+name: GitHub Mirror
+author: bhcleek
+description: ⤵️ Mirror remote repository
+branding:
+  icon: 'git-branch'
+  color: 'gray-dark'
+inputs:
+  source_repo:
+    description: GitHub public repo slug or full clone URL
+    required: false
+  destination_repo:
+    description: GitHub public repo slug or Full clone URL
+    required: false
+  ssh_private_key:
+    description: SSH key used to authenticate with source and destination ssh urls provided (optional if public or https url with authentication)
+    required: false
+  source_ssh_private_key:
+    description: SSH key used to authenticate with source ssh url provided (optional if public or https url with authentication)
+    required: false
+  destination_ssh_private_key:
+    description: SSH key used to authenticate with destination ssh url provided (optional if public or https url with authentication)
+    required: false
+  github_token:
+    description: GitHub token secret
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    GITHUB_TOKEN: "${{ inputs.github_token }}"
+    SSH_PRIVATE_KEY: "${{ inputs.ssh_private_key }}"
+    UPSTREAM_SSH_PRIVATE_KEY: "${{ inputs.source_ssh_private_key }}"
+    DESTINATION_SSH_PRIVATE_KEY: "${{ inputs.destination_ssh_private_key }}"
+  args:
+    - "${{ inputs.destination_repo }}"
+    - "${{ inputs.source_repo }}"
