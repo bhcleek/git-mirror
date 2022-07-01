@@ -27,7 +27,7 @@ if ! printf ${UPSTREAM_REPO} | grep -Eq ':|@|\.git\/?$'; then
   printf "UPSTREAM_REPO does not seem to be a valid git URI, assuming it's a GitHub repo\n" >&2
   printf "Originally: %s\n" "${UPSTREAM_REPO}" >&2
 
-  if [[ -n "${SSH_PRIVATE_KEY}" || -n "${UPSTREAM_SSH_PRIVATE_KEY}" ]]; then
+  if [[ -f "${HOME}/.ssh/src_rsa" ]]; then
     UPSTREAM_REPO="git@github.com:${UPSTREAM_REPO}.git"
     GIT_SSH_COMMAND="ssh -v"
   else
@@ -41,7 +41,7 @@ if ! printf ${DEST_REPO} | grep -Eq ':|@|\.git\/?$'; then
   printf "DEST_REPO does not seem to be a valid git URI, assuming it's a GitHub repo\n" >&2
   printf "Originally: %s\n" "${DEST_REPO}" >&2
 
-  if [[ -n "${SSH_PRIVATE_KEY}" || -n "${DESTINATION_SSH_PRIVATE_KEY}" ]]; then
+  if [[ -f "${HOME}/.ssh/dst_rsa" ]]; then
     DEST_REPO="git@github.com:${DEST_REPO}.git"
     GIT_SSH_COMMAND="ssh -v"
   else
