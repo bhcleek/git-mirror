@@ -19,12 +19,14 @@ if [[ -n "${SSH_PRIVATE_KEY}" ]]; then
   chmod 600 "${sshtmp}/dst_rsa"
 fi
 
-if [[ -n "${SOURCE_SSH_PRIVATE_KEY}" ]]; then
-  printf "%s" "${SOURCE_SSH_PRIVATE_KEY}" | sed 's/\\n/\n/g' > "${sshtmp}/src_rsa"
+if [[ -n "${UPSTREAM_SSH_PRIVATE_KEY}" ]]; then
+  printf "Saving UPSTREAM_SSH_PRIVATE_KEY\n" >&2
+  printf "%s" "${UPSTREAM_SSH_PRIVATE_KEY}" | sed 's/\\n/\n/g' > "${sshtmp}/src_rsa"
   chmod 600 "${sshtmp}/src_rsa"
 fi
 
 if [[ -n "${DESTINATION_SSH_PRIVATE_KEY}" ]]; then
+  printf "Saving DESTINATION_SSH_PRIVATE_KEY\n" >&2
   printf "%s" "${DESTINATION_SSH_PRIVATE_KEY}" | sed 's/\\n/\n/g' > "${sshtmp}/dst_rsa"
   chmod 600 "${sshtmp}/dst_rsa"
 fi
