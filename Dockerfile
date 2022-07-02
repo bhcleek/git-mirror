@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM alpine
 
 LABEL \
   org.opencontainers.image.title="GitHub Mirror" \
