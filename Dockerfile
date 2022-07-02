@@ -7,7 +7,7 @@ LABEL \
   org.opencontainers.image.source="https://github.com/bhcleek/github-mirror" \
   org.opencontainers.image.licenses="MIT"
 
-RUN apt-get update && apt-get install -y git openssh-client && \
+RUN apk add --no-cache git openssh-client && \
   echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
 ADD *.sh /
