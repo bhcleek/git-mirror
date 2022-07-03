@@ -52,3 +52,11 @@ When using a GitHub repos with shorthand, the `github_token` must be set. Note t
 ```yml
 source_repo: "git@github.com:username/repository.git"
 ```
+
+## Scripts
+
+Users may find the scripts in the `scripts` directory useful.
+
+### Creating deploy keys for destination repositories
+
+`scripts/create-mirror-keys.sh` will create SSH keys for a set of repositories and will set the respective public key as a deploy key in the respective destination repository. It is up to the user to copy the generated private key to the secrets that will be used by the action.
