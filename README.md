@@ -25,9 +25,10 @@ jobs:
       with:
         source_repo: "source/repository"
         destination_repo: "destination/repository"
-        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} # optional
-        source_ssh_private_key: ${{ secrets.SOURCE_SSH_PRIVATE_KEY }} # optional, will override `SSH_PRIVATE_KEY`
-        destination_ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }} # optional, will override `SSH_PRIVATE_KEY`
+        github_token: "${{ secrets.GITHUB_TOKEN }}" # optional
+        ssh_private_key: "${{ secrets.SSH_PRIVATE_KEY }}" # optional
+        source_ssh_private_key: "${{ secrets.SOURCE_SSH_PRIVATE_KEY }}" # optional, will override `SSH_PRIVATE_KEY`
+        destination_ssh_private_key: "${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}" # optional, will override `SSH_PRIVATE_KEY`
 ```
 
 If `source_repo` is private or with another provider, either (1) use an authenticated HTTPS repo clone url like `https://${access_token}@github.com/owner/repository.git` or (2) set a `SSH_PRIVATE_KEY` secret environment variable and use the SSH clone url
@@ -41,6 +42,8 @@ The workflow will need to be defined in the upstream repository in order to cont
 ##### Using shorthand
 
 You can use GitHub repo shorthand like `username/repository`.
+
+When using a GitHub repos with shorthand, the `github_token` must be set. Note that GitHub Actions automatically inject a secret with write access to the current repository.
 
 ##### Using ssh
 
