@@ -5,11 +5,6 @@ set -e -o pipefail
 sshtmp="${RUNNER_TEMP}/ssh"
 mkdir -p "${sshtmp}"
 
-if [[ -z "${GITHUB_TOKEN}" ]]; then
-  printf "Set the GITHUB_TOKEN environment variable.\n" >&2
-  exit 1
-fi
-
 if [[ -n "${SSH_PRIVATE_KEY}" ]]; then
   printf "Saving SSH_PRIVATE_KEY\n" >&2
 
