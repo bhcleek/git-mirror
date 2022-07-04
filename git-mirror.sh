@@ -77,7 +77,7 @@ if [[ "$(dirname "$(dirname "$(printf "%s" "${DEST_REPO}" | tr ':' '/')")")" =~ 
   # unset mirror on origin so that refspecs can be used.
   git config --unset remote.origin.mirror
   # get the refspecs for updating the destination
-  refspecs=$(git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push --dry-run --porcelain --prune origin '+refs/*:refs/*' | grep '^[ +-*!=]' | cut -f 2)
+  refspecs=$(git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push --dry-run --porcelain --prune origin '+refs/*:refs/*' | grep '^[- +*!=]' | cut -f 2)
 
   # strip any refspec that would affect a hidden branch (i.e. a pull request ref) in the destination
   refspecs="$(printf "%s" "${refspecs}" | grep -v :refs/pull/)"
