@@ -68,11 +68,21 @@ git remote --verbose
 printf "Getting upstream\n" >&2
 git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/src_rsa" fetch --quiet upstream
 
-# refs/pull is a special namespace for GitHub. Special case it for now until
-# there's a need for more robust handling. Remove any refs/pull/* refs and
-# fetch the refs/pull/* from the destination before mirroring to the
-# destination.
-git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" fetch --quiet --prune origin '+refs/pull/*:refs/pull/*'
-
 printf "Pushing changes from upstream to origin\n" >&2
-git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push origin
+
+# check whether the destination looks like a GitHub repository by replacing all
+# ':' with '/' so that dirname can be used to strip off the repository and org
+# and test against the portion that remains.
+if [[ "$(dirname "$(dirname "$(printf "%s" "${DEST_REPO}" | tr ':' '/')")")" =~ 'github.com$' ]]; then
+  # unset mirror on origin so that refspecs can be used.
+  git config --unset remote.origin.mirror
+  # get the refspecs for updating the destination
+  refspecs=$(git push -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" --dry-run --porcelain --prune origin '+refs/*:refs/*' | cut -f 2)
+
+  # strip any refspec that would affect a hidden branch (i.e. a pull request ref) in the destination
+  refspecs="$(printf "%s" "${refspecs}" | grep -v :refs/pull/)"
+
+  printf "%s" "${refspecs}" | xargs git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push origin
+else
+  git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push origin
+fi
