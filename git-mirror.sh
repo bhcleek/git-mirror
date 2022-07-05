@@ -82,7 +82,7 @@ if [[ "$(dirname "$(dirname "$(printf "%s" "${DEST_REPO}" | tr ':' '/')")")" =~ 
   # strip any refspec that would affect a hidden branch (i.e. a pull request ref) in the destination
   refspecs="$(printf "%s" "${refspecs}" | grep -v :refs/pull/)"
 
-  printf "%s" "${refspecs}" | xargs git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push origin
+  printf "%s" "${refspecs}" | xargs git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push --force origin
 else
   git -c core.sshCommand="/usr/bin/ssh -i ~/.ssh/dst_rsa" push origin
 fi
